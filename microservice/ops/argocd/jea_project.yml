@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: jea
+  namespace: argocd
+
+spec:
+  # Project description
+  description: JEA Project
+
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+  - '*'
+
+  destinations:
+  - namespace: jea
+    server: https://kubernetes.default.svc
+    name: in-cluster
+
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: Namespace
+  - group: '*'
+    kind: PersistentVolume
+  - group: '*'
+    kind: PersistentVolumeClaim
+
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+

@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blog-mysql-initdb-config
+  namespace: jea
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS blogrest;
+    USE blogrest;
+    CREATE TABLE IF NOT EXISTS app_user (
+        id INT PRIMARY KEY,
+        username VARCHAR(255) NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS post (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        content TEXT,
+        created_at DATETIME,
+        title VARCHAR(255),
+        updated_at DATETIME,
+        author_id INT,
+        post_id INT
+    );
+    INSERT INTO app_user (id, username) VALUES ('1', 'TestUser');
+    INSERT INTO post (content, created_at, title, updated_at, author_id, post_id) VALUES ('Test! User: Test Password: Test', '2024-06-15', 'Test Nutzer!', '2024-06-15', 1, 1);
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-mysql
+  namespace: jea
+spec:
+  selector:
+    matchLabels:
+      app: blog-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: blog-mysql
+    spec:
+      containers:
+      - image: biarms/mysql:5.7
+        name: blog-mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: blog-mysql-secret
+              key: password
+        ports:
+        - containerPort: 3306
+          name: blog-mysql
+        volumeMounts:
+        - name: blog-mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
+        - name: blog-mysql-persistent-storage
+          mountPath: /var/lib/mysql1
+      volumes:
+      - name: blog-mysql-initdb
+        configMap:
+          name: blog-mysql-initdb-config
+      - name: blog-mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: blog-mysql-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog-mysql
+  namespace: jea
+spec:
+  ports:
+  - port: 33060
+    targetPort: 3306
+  selector:
+    app: blog-mysql

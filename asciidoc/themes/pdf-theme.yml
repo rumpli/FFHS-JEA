@@ -1,0 +1,11 @@
+extends: default
+footer:
+  recto: &shared_footer
+    right:
+      content: 'Seite {page-number} von {page-count}'
+    center:
+      content: 15.06.24
+    left:
+      content: Dimitri Waber & Yannick Englert
+  verso: *shared_footer
+document-title: Test Title

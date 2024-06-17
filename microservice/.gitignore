@@ -1,0 +1,12 @@
+# MacOSX
+.DS_Store
+
+/vendor
+.vendir-tmp*
+dockerhub.config
+ops/argocd/github_secret.yml
+.gradle/
+**/.gradle/
+build/
+*.jar
+*.war

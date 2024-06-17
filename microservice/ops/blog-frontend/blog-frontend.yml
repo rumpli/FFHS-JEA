@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: jea-blog-frontend
+  name: jea-blog-frontend
+  namespace: jea
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jea-blog-frontend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: jea-blog-frontend
+    spec:
+      containers:
+      - image: rumpli/jea-blog-frontend
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://blog-rest-svc:8081"
+        - name: NEXT_PUBLIC_AUTH_URL
+          value: "http://auth-svc:8080/auth/api/auth"
+        name: jea-blog-frontend
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}

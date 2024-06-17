@@ -1,0 +1,9 @@
+apiVersion: vendir.k14s.io/v1alpha1
+directories:
+- contents:
+  - helmChart:
+      appVersion: v2.11.2
+      version: 7.1.0
+    path: argocd/argocd
+  path: vendor
+kind: LockConfig

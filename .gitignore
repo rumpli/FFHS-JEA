@@ -1,0 +1,6 @@
+# MacOSX
+.DS_Store
+
+.idea
+.gradle/
+**/.gradle/
