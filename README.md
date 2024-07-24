@@ -23,7 +23,7 @@ Table of Contents
 This project is the semester work from the "Java Enterprise Application" module at the FFHS (FS23). The code was written with IntelliJ and VIM. For more information about the project have a look at the AsciiDoc documentation.
 
 #### Grade
-- x.x
+- 5.4
 
 ### More FFHS projects
 
